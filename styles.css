@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SUNO Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-wrap">
+          <div class="brand-mark">S</div>
+          <div>
+            <p class="eyebrow">Creative studio</p>
+            <h1>SUNO</h1>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button class="nav-item active">Create</button>
+          <button class="nav-item">Library</button>
+          <button class="nav-item">Discover</button>
+          <button class="nav-item">Favorites</button>
+        </nav>
+
+        <div class="sidebar-card">
+          <p class="card-label">Current plan</p>
+          <h3>Pro Creator</h3>
+          <div class="quota">
+            <span>Tracks left</span>
+            <strong>24</strong>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow muted">Music generation</p>
+            <h2>Build your next song</h2>
+          </div>
+          <button class="ghost-button">Export mix</button>
+        </header>
+
+        <section class="composer-card">
+          <form id="song-form" class="song-form">
+            <div class="field large-field">
+              <label for="prompt">Describe your song</label>
+              <textarea
+                id="prompt"
+                name="prompt"
+                rows="4"
+                placeholder="A dreamy synthwave anthem with cinematic guitars, glowing vocals, and a big emotional chorus..."
+              >A dreamy synthwave anthem with cinematic guitars, glowing vocals, and a big emotional chorus</textarea>
+            </div>
+
+            <div class="controls-grid">
+              <div class="field">
+                <label for="genre">Genre</label>
+                <select id="genre" name="genre">
+                  <option>Pop</option>
+                  <option selected>Electronic</option>
+                  <option>Hip Hop</option>
+                  <option>R&B</option>
+                  <option>Rock</option>
+                  <option>Indie</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="mood">Mood</label>
+                <select id="mood" name="mood">
+                  <option>Energetic</option>
+                  <option selected>Dreamy</option>
+                  <option>Melancholic</option>
+                  <option>Confident</option>
+                  <option>Chill</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="length">Length</label>
+                <select id="length" name="length">
+                  <option>30 sec</option>
+                  <option selected>2 min</option>
+                  <option>3 min</option>
+                  <option>4 min</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="voice">Voice</label>
+                <select id="voice" name="voice">
+                  <option>Female</option>
+                  <option selected>Neutral</option>
+                  <option>Male</option>
+                  <option>Auto-tune</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="panel-actions">
+              <button type="button" class="secondary-button" id="use-template">Use template</button>
+              <button type="submit" class="primary-button">Generate songs</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="results-header">
+          <div>
+            <p class="eyebrow muted">Generated tracks</p>
+            <h3>Fresh creations</h3>
+          </div>
+          <button class="text-button">View all</button>
+        </section>
+
+        <section id="track-list" class="track-list" aria-live="polite"></section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
