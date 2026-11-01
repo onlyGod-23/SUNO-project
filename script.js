@@ -6,63 +6,115 @@ const mockTrackTemplates = [
     style: 'Synthwave',
     duration: '2:34',
     mood: 'Dreamy',
-    energy: '86%'
+    energy: '86%',
+    voice: 'Neutral'
   },
   {
     title: 'Velvet Skies',
     style: 'Electronic',
     duration: '3:11',
     mood: 'Ambient',
-    energy: '79%'
+    energy: '79%',
+    voice: 'Female'
   },
   {
     title: 'Neon Horizon',
     style: 'Future Pop',
     duration: '2:48',
     mood: 'Uplift',
-    energy: '91%'
+    energy: '91%',
+    voice: 'Auto-tune'
   }
 ];
+
+function createWaveformBars() {
+  return Array.from({ length: 10 }, (_, i) => {
+    const height = 20 + Math.random() * 80;
+    return `<span style="height:${height}%"></span>`;
+  }).join('');
+}
+
+function generateSongFromPrompt(prompt, genre, mood, length, voice) {
+  const cleanedPrompt = (prompt || '').trim() || 'Dreamy synthwave anthem';
+  const words = cleanedPrompt.split(/\s+/).slice(0, 4).filter(Boolean);
+  const titleParts = words.length ? words : ['New', 'Sunset', 'Song'];
+
+  return {
+    title: titleParts
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' '),
+    style: genre || 'Electronic',
+    duration: length || '2 min',
+    mood: mood || 'Dreamy',
+    energy: `${72 + Math.floor(Math.random() * 24)}%`,
+    voice: voice || 'Neutral'
+  };
+}
 
 function renderTracks(tracks) {
   const list = document.getElementById('track-list');
   if (!list) return;
 
-  list.innerHTML = tracks
-    .map((track, index) => `
-      <article class="track-card">
-        <div class="track-top">
-          <span class="track-badge">${track.style}</span>
-          <span class="track-stats">${track.duration}</span>
-        </div>
-        <h4>${track.title}</h4>
-        <div class="track-meta">
-          <span>${track.mood}</span>
-          <span>•</span>
-          <span>${track.energy} energy</span>
-        </div>
-        <div class="waveform" aria-label="Audio waveform preview">
-          <span style="height: 26%"></span>
-          <span style="height: 58%"></span>
-          <span style="height: 42%"></span>
-          <span style="height: 73%"></span>
-          <span style="height: 55%"></span>
-          <span style="height: 88%"></span>
-          <span style="height: 68%"></span>
-          <span style="height: 46%"></span>
-          <span style="height: 80%"></span>
-          <span style="height: 60%"></span>
-        </div>
-        <div class="track-actions">
-          <button class="play-button" type="button">Play preview ${index + 1}</button>
-          <span class="track-stats">${track.mood}</span>
-        </div>
-      </article>
-    `)
-    .join('');
+  list.innerHTML = tracks.map((track, index) => `
+    <article class="track-card">
+      <div class="track-top">
+        <span class="track-badge">${track.style}</span>
+        <span class="track-stats">${track.duration}</span>
+      </div>
+      <h4>${track.title}</h4>
+      <div class="track-meta">
+        <span>${track.mood}</span>
+        <span>•</span>
+        <span>${track.energy} energy</span>
+      </div>
+      <div class="waveform" aria-label="Audio waveform preview">
+        ${createWaveformBars()}
+      </div>
+      <div class="track-actions">
+        <button class="play-button" type="button" data-index="${index}">
+          Play preview ${index + 1}
+        </button>
+        <span class="track-stats">${track.voice}</span>
+      </div>
+    </article>
+  `).join('');
+
+  document.querySelectorAll('.play-button').forEach((button) => {
+    button.addEventListener('click', () => {
+      playPreviewTone(Number(button.dataset.index));
+    });
+  });
+}
+
+function playPreviewTone(index) {
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) return;
+
+  const ctx = new AudioCtx();
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  const frequencies = [220, 294, 349, 440, 392, 330];
+  const base = frequencies[index % frequencies.length];
+
+  osc.type = 'sawtooth';
+  osc.frequency.value = base;
+  gain.gain.value = 0.0001;
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  gain.gain.exponentialRampToValueAtTime(0.15, now + 0.04);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.3);
+
+  osc.start(now);
+  osc.stop(now + 1.4);
 }
 
 function buildApp() {
+  if (!app) return;
+
   app.innerHTML = `
     <div class="app-shell">
       <aside class="sidebar">
@@ -104,7 +156,7 @@ function buildApp() {
           <form id="song-form" class="song-form">
             <div class="field large-field">
               <label for="prompt">Describe your song</label>
-              <textarea id="prompt" name="prompt" rows="4" placeholder="A dreamy synthwave anthem with cinematic guitars, glowing vocals, and a big emotional chorus...">A dreamy synthwave anthem with cinematic guitars, glowing vocals, and a big emotional chorus</textarea>
+              <textarea id="prompt" name="prompt" rows="4">A dreamy synthwave anthem with cinematic guitars, glowing vocals, and a big emotional chorus</textarea>
             </div>
 
             <div class="controls-grid">
@@ -177,38 +229,21 @@ function buildApp() {
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    const formData = new FormData(form);
-    const prompt = String(formData.get('prompt') || '').trim() || 'Dreamy synthwave anthem';
-    const genre = String(formData.get('genre') || 'Electronic');
-    const mood = String(formData.get('mood') || 'Dreamy');
-    const length = String(formData.get('length') || '2 min');
-    const voice = String(formData.get('voice') || 'Neutral');
 
-    const tracks = [
-      {
-        title: prompt.split(' ').slice(0, 3).join(' ') || 'New Track',
-        style: genre,
-        duration: length,
-        mood,
-        energy: '91%'
-      },
-      {
-        title: 'Velvet Lights',
-        style: 'Night Drive',
-        duration: '2:57',
-        mood: 'Atmospheric',
-        energy: '84%'
-      },
-      {
-        title: 'Skyline Bloom',
-        style: 'Cinematic Pop',
-        duration: '3:19',
-        mood: voice,
-        energy: '88%'
-      }
+    const formData = new FormData(form);
+    const prompt = formData.get('prompt');
+    const genre = formData.get('genre');
+    const mood = formData.get('mood');
+    const length = formData.get('length');
+    const voice = formData.get('voice');
+
+    const generated = [
+      generateSongFromPrompt(prompt, genre, mood, length, voice),
+      generateSongFromPrompt(`${prompt} with a soft cinematic chorus`, genre, mood, length, voice),
+      generateSongFromPrompt(`${prompt} with an uplifting bridge`, genre, mood, length, voice)
     ];
 
-    renderTracks(tracks);
+    renderTracks(generated);
   });
 
   useTemplateButton.addEventListener('click', () => {
