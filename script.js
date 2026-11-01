@@ -1,428 +1,224 @@
-* {
-  box-sizing: border-box;
-}
+const app = document.getElementById('app');
 
-:root {
-  --bg: #08111f;
-  --bg-2: #121b2d;
-  --panel: rgba(17, 25, 39, 0.92);
-  --panel-light: rgba(28, 39, 60, 0.9);
-  --card: rgba(20, 30, 47, 0.9);
-  --line: rgba(160, 174, 192, 0.16);
-  --text: #edf3ff;
-  --muted: #9aa9c0;
-  --primary: #7c6cff;
-  --primary-2: #7ae0ff;
-  --accent: #00d9b2;
-  --danger: #ff5b8f;
-  --shadow: 0 18px 50px rgba(8, 17, 31, 0.45);
-}
-
-html, body {
-  margin: 0;
-  min-height: 100%;
-  font-family: "Inter", sans-serif;
-  background:
-    radial-gradient(circle at top left, rgba(124, 108, 255, 0.25), transparent 25%),
-    radial-gradient(circle at top right, rgba(122, 224, 255, 0.15), transparent 20%),
-    var(--bg);
-  color: var(--text);
-}
-
-button, textarea, select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-  border: none;
-}
-
-.app-shell {
-  display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
-  max-width: 1480px;
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 24px;
-  gap: 22px;
-}
-
-.sidebar,
-.main-panel {
-  background: rgba(9, 15, 24, 0.8);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-  border-radius: 26px;
-}
-
-.sidebar {
-  padding: 22px 18px;
-}
-
-.brand-wrap {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 4px 8px 18px;
-  border-bottom: 1px solid var(--line);
-}
-
-.brand-mark {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-2));
-  color: white;
-  font-weight: 800;
-  font-size: 1.2rem;
-}
-
-.brand-wrap h1 {
-  margin: 4px 0 0;
-  font-size: 1.5rem;
-}
-
-.eyebrow {
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.68rem;
-  color: var(--primary-2);
-}
-
-.eyebrow.muted {
-  color: var(--muted);
-}
-
-.nav {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 28px;
-}
-
-.nav-item {
-  background: transparent;
-  color: var(--text);
-  padding: 12px 14px;
-  text-align: left;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  transition: 0.2s ease;
-}
-
-.nav-item.active,
-.nav-item:hover {
-  background: rgba(124, 108, 255, 0.14);
-  border-color: rgba(124, 108, 255, 0.32);
-}
-
-.sidebar-card {
-  margin-top: 28px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 16px;
-  background: linear-gradient(180deg, rgba(124, 108, 255, 0.12), rgba(16, 25, 39, 0.7));
-}
-
-.card-label {
-  margin: 0 0 8px;
-  color: var(--muted);
-  font-size: 0.78rem;
-}
-
-.sidebar-card h3 {
-  margin: 0;
-  font-size: 1.25rem;
-}
-
-.quota {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-  color: var(--muted);
-}
-
-.quota strong {
-  color: var(--text);
-  font-size: 1.1rem;
-}
-
-.main-panel {
-  padding: 24px;
-}
-
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.topbar h2 {
-  margin: 6px 0 0;
-  font-size: clamp(1.7rem, 2vw, 2.5rem);
-}
-
-.ghost-button,
-.secondary-button,
-.primary-button,
-.text-button {
-  border-radius: 12px;
-  padding: 0.84rem 1.1rem;
-  font-weight: 600;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.ghost-button:hover,
-.secondary-button:hover,
-.primary-button:hover,
-.text-button:hover {
-  transform: translateY(-1px);
-}
-
-.ghost-button {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--line);
-  color: var(--text);
-}
-
-.composer-card {
-  background: linear-gradient(180deg, rgba(23, 33, 52, 0.92), rgba(12, 19, 31, 0.94));
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  padding: 22px;
-}
-
-.song-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.large-field {
-  width: 100%;
-}
-
-label {
-  color: var(--muted);
-  font-weight: 600;
-  font-size: 0.86rem;
-}
-
-textarea,
-select {
-  width: 100%;
-  background: rgba(12, 18, 29, 0.9);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  color: var(--text);
-  padding: 0.9rem 1rem;
-  outline: none;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-select {
-  appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, #d8e7ff 50%), linear-gradient(135deg, #d8e7ff 50%, transparent 50%);
-  background-position: calc(100% - 20px) calc(50% - 2px), calc(100% - 14px) calc(50% - 2px);
-  background-size: 6px 6px, 6px 6px;
-  background-repeat: no-repeat;
-}
-
-.controls-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.panel-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-}
-
-.secondary-button {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--line);
-  color: var(--text);
-}
-
-.primary-button {
-  background: linear-gradient(135deg, var(--primary), #4dc0ff);
-  color: white;
-  box-shadow: 0 12px 35px rgba(124, 108, 255, 0.45);
-}
-
-.results-header {
-  margin-top: 28px;
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.results-header h3 {
-  margin: 6px 0 0;
-  font-size: 1.8rem;
-}
-
-.text-button {
-  background: transparent;
-  color: var(--primary-2);
-  padding-right: 0;
-}
-
-.track-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
-  margin-top: 18px;
-}
-
-.track-card {
-  background: linear-gradient(180deg, rgba(18, 26, 40, 0.9), rgba(12, 20, 31, 0.95));
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 18px;
-}
-
-.track-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
-
-.track-badge {
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: rgba(0, 217, 178, 0.12);
-  color: var(--accent);
-}
-
-.track-card h4 {
-  margin: 18px 0 8px;
-  font-size: 1.3rem;
-}
-
-.track-meta {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  color: var(--muted);
-  font-size: 0.8rem;
-}
-
-.waveform {
-  display: flex;
-  align-items: end;
-  gap: 6px;
-  height: 72px;
-  margin-top: 18px;
-  padding: 10px 0;
-}
-
-.waveform span {
-  display: block;
-  width: 7px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, var(--primary-2), var(--primary));
-  animation: pulse 1.2s ease-in-out infinite alternate;
-}
-
-.waveform span:nth-child(odd) {
-  animation-delay: 0.1s;
-}
-
-.waveform span:nth-child(3n) {
-  animation-delay: 0.2s;
-}
-
-.track-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 18px;
-  gap: 12px;
-}
-
-.play-button {
-  flex: 1;
-  background: rgba(124, 108, 255, 0.14);
-  border: 1px solid rgba(124, 108, 255, 0.28);
-  color: var(--text);
-  border-radius: 12px;
-  padding: 10px 14px;
-  font-weight: 600;
-}
-
-.track-stats {
-  color: var(--muted);
-  font-size: 0.82rem;
-}
-
-@keyframes pulse {
-  from {
-    transform: scaleY(0.4);
-    opacity: 0.7;
+const mockTrackTemplates = [
+  {
+    title: 'Midnight Echo',
+    style: 'Synthwave',
+    duration: '2:34',
+    mood: 'Dreamy',
+    energy: '86%'
+  },
+  {
+    title: 'Velvet Skies',
+    style: 'Electronic',
+    duration: '3:11',
+    mood: 'Ambient',
+    energy: '79%'
+  },
+  {
+    title: 'Neon Horizon',
+    style: 'Future Pop',
+    duration: '2:48',
+    mood: 'Uplift',
+    energy: '91%'
   }
-  to {
-    transform: scaleY(1);
-    opacity: 1;
-  }
+];
+
+function renderTracks(tracks) {
+  const list = document.getElementById('track-list');
+  if (!list) return;
+
+  list.innerHTML = tracks
+    .map((track, index) => `
+      <article class="track-card">
+        <div class="track-top">
+          <span class="track-badge">${track.style}</span>
+          <span class="track-stats">${track.duration}</span>
+        </div>
+        <h4>${track.title}</h4>
+        <div class="track-meta">
+          <span>${track.mood}</span>
+          <span>•</span>
+          <span>${track.energy} energy</span>
+        </div>
+        <div class="waveform" aria-label="Audio waveform preview">
+          <span style="height: 26%"></span>
+          <span style="height: 58%"></span>
+          <span style="height: 42%"></span>
+          <span style="height: 73%"></span>
+          <span style="height: 55%"></span>
+          <span style="height: 88%"></span>
+          <span style="height: 68%"></span>
+          <span style="height: 46%"></span>
+          <span style="height: 80%"></span>
+          <span style="height: 60%"></span>
+        </div>
+        <div class="track-actions">
+          <button class="play-button" type="button">Play preview ${index + 1}</button>
+          <span class="track-stats">${track.mood}</span>
+        </div>
+      </article>
+    `)
+    .join('');
 }
 
-@media (max-width: 980px) {
-  .app-shell {
-    grid-template-columns: 1fr;
-  }
+function buildApp() {
+  app.innerHTML = `
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-wrap">
+          <div class="brand-mark">S</div>
+          <div>
+            <p class="eyebrow">Creative studio</p>
+            <h1>SUNO</h1>
+          </div>
+        </div>
 
-  .sidebar {
-    padding-bottom: 12px;
-  }
+        <nav class="nav">
+          <button class="nav-item active" type="button">Create</button>
+          <button class="nav-item" type="button">Library</button>
+          <button class="nav-item" type="button">Discover</button>
+          <button class="nav-item" type="button">Favorites</button>
+        </nav>
 
-  .controls-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+        <div class="sidebar-card">
+          <p class="card-label">Current plan</p>
+          <h3>Pro Creator</h3>
+          <div class="quota">
+            <span>Tracks left</span>
+            <strong>24</strong>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow muted">Music generation</p>
+            <h2>Build your next song</h2>
+          </div>
+          <button class="ghost-button" type="button">Export mix</button>
+        </header>
+
+        <section class="composer-card">
+          <form id="song-form" class="song-form">
+            <div class="field large-field">
+              <label for="prompt">Describe your song</label>
+              <textarea id="prompt" name="prompt" rows="4" placeholder="A dreamy synthwave anthem with cinematic guitars, glowing vocals, and a big emotional chorus...">A dreamy synthwave anthem with cinematic guitars, glowing vocals, and a big emotional chorus</textarea>
+            </div>
+
+            <div class="controls-grid">
+              <div class="field">
+                <label for="genre">Genre</label>
+                <select id="genre" name="genre">
+                  <option>Pop</option>
+                  <option selected>Electronic</option>
+                  <option>Hip Hop</option>
+                  <option>R&B</option>
+                  <option>Rock</option>
+                  <option>Indie</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="mood">Mood</label>
+                <select id="mood" name="mood">
+                  <option>Energetic</option>
+                  <option selected>Dreamy</option>
+                  <option>Melancholic</option>
+                  <option>Confident</option>
+                  <option>Chill</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="length">Length</label>
+                <select id="length" name="length">
+                  <option>30 sec</option>
+                  <option selected>2 min</option>
+                  <option>3 min</option>
+                  <option>4 min</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="voice">Voice</label>
+                <select id="voice" name="voice">
+                  <option>Female</option>
+                  <option selected>Neutral</option>
+                  <option>Male</option>
+                  <option>Auto-tune</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="panel-actions">
+              <button type="button" class="secondary-button" id="use-template">Use template</button>
+              <button type="submit" class="primary-button">Generate songs</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="results-header">
+          <div>
+            <p class="eyebrow muted">Generated tracks</p>
+            <h3>Fresh creations</h3>
+          </div>
+          <button class="text-button" type="button">View all</button>
+        </section>
+
+        <section id="track-list" class="track-list" aria-live="polite"></section>
+      </main>
+    </div>
+  `;
+
+  const form = document.getElementById('song-form');
+  const useTemplateButton = document.getElementById('use-template');
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const prompt = String(formData.get('prompt') || '').trim() || 'Dreamy synthwave anthem';
+    const genre = String(formData.get('genre') || 'Electronic');
+    const mood = String(formData.get('mood') || 'Dreamy');
+    const length = String(formData.get('length') || '2 min');
+    const voice = String(formData.get('voice') || 'Neutral');
+
+    const tracks = [
+      {
+        title: prompt.split(' ').slice(0, 3).join(' ') || 'New Track',
+        style: genre,
+        duration: length,
+        mood,
+        energy: '91%'
+      },
+      {
+        title: 'Velvet Lights',
+        style: 'Night Drive',
+        duration: '2:57',
+        mood: 'Atmospheric',
+        energy: '84%'
+      },
+      {
+        title: 'Skyline Bloom',
+        style: 'Cinematic Pop',
+        duration: '3:19',
+        mood: voice,
+        energy: '88%'
+      }
+    ];
+
+    renderTracks(tracks);
+  });
+
+  useTemplateButton.addEventListener('click', () => {
+    const prompt = document.getElementById('prompt');
+    if (prompt) {
+      prompt.value = 'A dreamy synthwave anthem with cinematic guitars, glowing vocals, and a big emotional chorus';
+    }
+  });
+
+  renderTracks(mockTrackTemplates);
 }
 
-@media (max-width: 620px) {
-  .app-shell {
-    padding: 14px;
-  }
-
-  .main-panel,
-  .sidebar {
-    border-radius: 18px;
-  }
-
-  .controls-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .panel-actions,
-  .topbar,
-  .track-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
+buildApp();
